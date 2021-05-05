@@ -1,0 +1,44 @@
+{
+	"name": "circli/api-base",
+	"description": "Base package for setting up apis",
+	"type": "circli-module",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Andreas Sundqvist",
+			"email": "andreas@stefna.is"
+		}
+	],
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"require": {
+		"php": "^8.0",
+		"ext-json": "*",
+		"psr/container": "^1.0",
+		"php-di/php-di": "^6.0",
+		"circli/api-auth-module": "dev-master",
+		"circli/tenant-extension": "^1.0",
+		"circli/database-extension": "^1.0",
+		"ramsey/uuid": "^4.1",
+		"league/openapi-psr7-validator": "^0.14",
+		"circli/middlewares": "^1.0",
+		"stefna/log": "^1.6",
+		"neomerx/cors-psr7": "^2.0"
+	},
+	"require-dev": {
+		"circli/web-core": "2.x-dev",
+		"async-aws/ssm": "^1.1.0",
+		"stefna/codestyle": "^1.11",
+		"phpstan/phpstan": "^0.12.85"
+	},
+	"autoload": {
+		"psr-4": {
+			"Circli\\ApiBase\\": "src/"
+		}
+	},
+	"scripts": {
+		"check": "./vendor/bin/phpcs --standard=vendor/stefna/codestyle/library.xml src/",
+		"fix": "./vendor/bin/phpcbf --standard=vendor/stefna/codestyle/library.xml src/",
+		"stan": "phpstan analyse"
+	}
+}
