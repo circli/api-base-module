@@ -4,6 +4,7 @@ namespace Circli\ApiBase\Tenant;
 
 use Circli\ApiBase\Tenant\Factory\DatabaseFactory;
 use Circli\ApiBase\Tenant\Factory\ServiceFactory;
+use Circli\Core\Config;
 use Circli\Core\Environment;
 use Circli\Database\Service as DatabaseService;
 use Circli\TenantExtension\Tenant;
@@ -24,6 +25,7 @@ abstract class AbstractFactory implements Factory
 	protected KeyPrefixSecretsProvider $secretsManager;
 
 	public function __construct(
+		protected Config $config,
 		ProviderInterface $secretsManager,
 		protected Environment $environment,
 		protected TenantRepository $tenantRepository,
@@ -63,7 +65,7 @@ abstract class AbstractFactory implements Factory
 	public function create(string $service, ...$args)
 	{
 		if (!isset($this->factories[$service])) {
-			throw new \BadMethodCallException('No factory for service found');
+			throw new \BadMethodCallException(sprintf('No factory for "%s" found', $service));
 		}
 		/** @var ServiceFactory<C> $factory */
 		$factory = $this->factories[$service];

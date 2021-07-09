@@ -7,15 +7,14 @@ use AsyncAws\Ssm\SsmClient;
 use Circli\TenantExtension\Tenant;
 
 /**
- * @property KeyPrefixSecretsProvider $secretsManger
+ * @property KeyPrefixSecretsProvider $secretsManager
  */
 trait KeyPrefixLoadTrait
 {
 	private string $searchKey;
-	private array $tenantConfig = [];
 
 	protected function loadTenantConfig(Tenant $tenant): void
 	{
-		$this->secretsManger->setPrefix('/' . $this->searchKey . '/tenant-' . $tenant->getId()->toString());
+		$this->secretsManager->setPrefix('/' . $this->searchKey . '/tenant-' . $tenant->getId()->toString());
 	}
 }

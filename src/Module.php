@@ -16,7 +16,6 @@ final class Module implements ModuleInterface
 	{
 		$configFolder = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'container';
 		return [
-			ConditionalDefinition::classExist(SsmClient::class, $configFolder . DIRECTORY_SEPARATOR . 'aws.php'),
 			$configFolder . DIRECTORY_SEPARATOR . 'tenant.php',
 			$configFolder . DIRECTORY_SEPARATOR . 'auth.php',
 			$configFolder . DIRECTORY_SEPARATOR . 'cors.php',
