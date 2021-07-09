@@ -23,7 +23,8 @@
 		"league/openapi-psr7-validator": "^0.14",
 		"circli/middlewares": "^1.0",
 		"stefna/log": "^1.6",
-		"neomerx/cors-psr7": "^2.0"
+		"neomerx/cors-psr7": "^2.0",
+		"stefna/secrets-manager-core": "dev-main"
 	},
 	"require-dev": {
 		"circli/web-core": "2.x-dev",

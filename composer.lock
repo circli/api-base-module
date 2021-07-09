@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5a4cb7db5482a77d1f1e0462208e2f7",
+    "content-hash": "7a1f473d30c726ad095b9042383104aa",
     "packages": [
         {
             "name": "atlas/mapper",
@@ -2523,6 +2523,53 @@
             "time": "2021-03-25T12:11:47+00:00"
         },
         {
+            "name": "stefna/secrets-manager-core",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefna/secrets-manager-core.git",
+                "reference": "6675b4d450734ef47fc31eb95b2f3a327409c461"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefna/secrets-manager-core/zipball/6675b4d450734ef47fc31eb95b2f3a327409c461",
+                "reference": "6675b4d450734ef47fc31eb95b2f3a327409c461",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/stefnadev/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.1 || ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Stefna\\SecretsManager\\": "src/"
+                }
+            },
+            "notification-url": "https://repo.packagist.com/stefnadev/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Sundqvist",
+                    "email": "andreas@stefna.is"
+                }
+            ],
+            "description": "Secrets manager core",
+            "support": {
+                "source": "https://github.com/stefna/secrets-manager-core/tree/main"
+            },
+            "time": "2021-07-09T08:19:57+00:00"
+        },
+        {
             "name": "sunkan/enum",
             "version": "1.5.0",
             "source": {
@@ -4649,6 +4696,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "circli/api-auth-module": 20,
+        "stefna/secrets-manager-core": 20,
         "circli/web-core": 20
     },
     "prefer-stable": true,
@@ -4658,5 +4706,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }

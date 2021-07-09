@@ -2,50 +2,43 @@
 
 namespace Circli\ApiBase\Tenant;
 
-use Atlas\Orm\Atlas;
-use Atlas\Orm\Transaction\AutoCommit;
-use Atlas\Pdo\Connection;
-use Circli\Core\Config;
+use Circli\ApiBase\Tenant\Factory\DatabaseFactory;
+use Circli\ApiBase\Tenant\Factory\ServiceFactory;
 use Circli\Core\Environment;
 use Circli\Database\Service as DatabaseService;
-use Circli\Database\WhereUuid;
 use Circli\TenantExtension\Tenant;
 use Circli\TenantExtension\TenantId;
 use Circli\TenantExtension\TenantRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Stefna\SecretsManager\Provider\ProviderInterface;
 
 abstract class AbstractFactory implements Factory
 {
-	protected ?Tenant $tenant = null;
-	/** @var array<callable> */
+	/**
+	 * @template T
+	 * @var array<class-string<T>, ServiceFactory<T>>
+	 */
 	protected array $factories = [];
-	protected Environment $environment;
-
-	private ?DatabaseService $databaseService = null;
+	protected ?Tenant $tenant = null;
+	protected KeyPrefixSecretsProvider $secretsManager;
 
 	public function __construct(
-		protected Config $config,
+		ProviderInterface $secretsManager,
+		protected Environment $environment,
 		protected TenantRepository $tenantRepository,
-		protected LoggerInterface $logger
+		protected LoggerInterface $logger,
 	) {
-		$this->environment = $config->get('app.mode');
-
-		$this->factories[DatabaseService::class] = function () {
-			if (!$this->databaseService) {
-				$connection = $this->createConnection();
-				WhereUuid::preCalculateDriver($connection);
-
-				$this->databaseService = new DatabaseService(Atlas::new($connection, AutoCommit::class), $connection);
-			}
-			return $this->databaseService;
-		};
-
+		if (!$secretsManager instanceof KeyPrefixSecretsProvider) {
+			$secretsManager = new KeyPrefixSecretsProvider($secretsManager);
+		}
+		$this->secretsManager = $secretsManager;
 		$this->initFactories();
 	}
 
 	protected function initFactories(): void
 	{
+		$this->factories[DatabaseService::class] = new DatabaseFactory($this->secretsManager);
 	}
 
 	public function getAllTenants(): array
@@ -57,16 +50,25 @@ abstract class AbstractFactory implements Factory
 	{
 		$this->tenant = $tenant;
 		$this->loadTenantConfig($tenant);
+		foreach ($this->factories as $factory) {
+			$factory->reload();
+		}
 	}
 
+	/**
+	 * @template C
+	 * @param class-string<C> $service
+	 * @return C
+	 */
 	public function create(string $service, ...$args)
 	{
 		if (!isset($this->factories[$service])) {
 			throw new \BadMethodCallException('No factory for service found');
 		}
+		/** @var ServiceFactory<C> $factory */
 		$factory = $this->factories[$service];
 
-		return $factory(...$args);
+		return $factory->create($args);
 	}
 
 	public function configureById(TenantId $tenantId): Tenant
@@ -89,20 +91,5 @@ abstract class AbstractFactory implements Factory
 		return new DefaultTenantId(Uuid::fromString($tenant));
 	}
 
-	protected function createConnection(): Connection
-	{
-		$config = $this->config;
-		$dsn = $config->get('db.dsn');
-		$username = $config->get('db.username');
-		$password = $config->get('db.password');
-
-		return Connection::new($dsn, $username, $password);
-	}
-
 	abstract protected function loadTenantConfig(Tenant $tenant): void;
-
-	/**
-	 * @return array<string, mixed>
-	 */
-	abstract protected function getConfig(string $section): array;
 }
