@@ -15,7 +15,7 @@ final class Middleware implements MiddlewareInterface
 {
 	public function __construct(
 		private ResponseFactoryInterface $responseFactory,
-		private Analyzer $analyzer
+		private Analyzer $analyzer,
 	) {}
 
 	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

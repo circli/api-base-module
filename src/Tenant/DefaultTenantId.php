@@ -7,12 +7,9 @@ use Ramsey\Uuid\UuidInterface;
 
 final class DefaultTenantId implements TenantId
 {
-	private UuidInterface $uuid;
-
-	public function __construct(UuidInterface $uuid)
-	{
-		$this->uuid = $uuid;
-	}
+	public function __construct(
+		private UuidInterface $uuid,
+	) {}
 
 	public function toString(): string
 	{

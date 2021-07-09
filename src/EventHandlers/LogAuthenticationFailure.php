@@ -13,7 +13,7 @@ final class LogAuthenticationFailure
 
 	public function __invoke(AuthenticationFailed $event): void
 	{
-		$this->logger->notice('Authentication failure', [
+		$this->logger->warning('Authentication failure', [
 			'message' => $event->getException()->getMessage(),
 			'exception' => $event->getException(),
 		]);

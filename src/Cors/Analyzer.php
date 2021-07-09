@@ -25,12 +25,11 @@ final class Analyzer extends BaseAnalyzer
 		SimpleRequestHeaders::LC_CONTENT_LANGUAGE,
 	];
 
-	private AnalysisStrategyInterface $strategyGetter;
-
-	public function __construct(AnalysisStrategyInterface $strategy, FactoryInterface $factory)
-	{
-		parent::__construct($strategy, $factory);
-		$this->strategyGetter = $strategy;
+	public function __construct(
+		private AnalysisStrategyInterface $strategyGetter,
+		FactoryInterface $factory,
+	) {
+		parent::__construct($strategyGetter, $factory);
 	}
 
 	public function getStrategy(): AnalysisStrategyInterface

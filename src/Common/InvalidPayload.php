@@ -8,12 +8,9 @@ use PayloadInterop\DomainPayload;
 
 final class InvalidPayload implements DomainPayload
 {
-	private \BadMethodCallException $exception;
-
-	public function __construct(\BadMethodCallException $exception)
-	{
-		$this->exception = $exception;
-	}
+	public function __construct(
+		private \BadMethodCallException $exception,
+	) {}
 
 	public function getStatus(): string
 	{
